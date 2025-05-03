@@ -1,0 +1,59 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Tạo GUI chính
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ToggleLogoGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+-- Tạo nút logo với hiệu ứng đẹp
+local logoButton = Instance.new("ImageButton")
+logoButton.Size = UDim2.new(0, 50, 0, 50)
+logoButton.Position = UDim2.new(0, 100, 0, 100)
+logoButton.Image = "rbxassetid://75750653669043" -- Thay bằng ID logo của bạn
+logoButton.BackgroundTransparency = 1
+logoButton.Draggable = true
+logoButton.Parent = screenGui
+
+-- Bo góc logo để nó thành hình tròn
+logoButton.ClipsDescendants = true
+logoButton.AnchorPoint = Vector2.new(0.5, 0.5)  -- Để logo luôn căn giữa theo vị trí
+logoButton.ImageRectSize = Vector2.new(50, 50)  -- Đảm bảo kích thước hình ảnh logo đúng
+logoButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
+logoButton.BorderSizePixel = 0
+
+-- Bo góc tròn
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 25)  -- Bo tròn góc 50% để thành hình tròn
+corner.Parent = logoButton
+
+-- Thêm hiệu ứng hover (Khi di chuột qua logo)
+logoButton.MouseEnter:Connect(function()
+    logoButton:TweenSize(UDim2.new(0, 60, 0, 60), "Out", "Quad", 0.2, true)
+    logoButton.ImageColor3 = Color3.fromRGB(150, 150, 150)  -- Thay đổi màu sắc khi hover
+end)
+
+logoButton.MouseLeave:Connect(function()
+    logoButton:TweenSize(UDim2.new(0, 50, 0, 50), "Out", "Quad", 0.2, true)
+    logoButton.ImageColor3 = Color3.fromRGB(255, 255, 255)  -- Đưa màu sắc trở lại bình thường
+end)
+
+-- Thêm hiệu ứng khi nhấn logo
+logoButton.MouseButton1Click:Connect(function()
+    logoButton:TweenSize(UDim2.new(0, 55, 0, 55), "Out", "Quad", 0.1, true)
+    wait(0.1)
+    logoButton:TweenSize(UDim2.new(0, 50, 0, 50), "Out", "Quad", 0.1, true)
+
+    -- Tải menu
+    local function loadMenu()
+        local success, err = pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/lynussxs/Testhub/refs/heads/main/Hmm.lua"))()
+        end)
+
+        if not success then
+            warn("Error loading menu: " .. err)
+        end
+    end
+    loadMenu()  -- Tải và chạy script menu từ URL
+end)
