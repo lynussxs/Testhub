@@ -1,0 +1,129 @@
+-- Thông tin về Hub (giữ nguyên)
+local TenNguoiLam = "Long H2K"
+local PhienBan = "V1.0"
+local TenHub = "Sigma Hub🌠"
+
+-- Tạo màn hình chính (ScreenGui) (giữ nguyên)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "MyHubUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Tạo nút mở/tắt menu (ImageButton) (giữ nguyên)
+local OpenButton = Instance.new("ImageButton")
+OpenButton.Name = "OpenHubButton"
+OpenButton.Size = UDim2.new(0, 50, 0, 50)
+OpenButton.Position = UDim2.new(0, 10, 0, 10)
+OpenButton.BackgroundTransparency = 1
+-- Đặt ID ảnh cho nút mở menu
+OpenButton.Image = "rbxassetid://75750653669043"
+OpenButton.Parent = ScreenGui
+
+-- Tạo khung menu chính (Frame) (giữ nguyên)
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainHubFrame"
+MainFrame.Size = UDim2.new(0, 300, 0, 300) -- Tăng chiều cao để chứa nội dung
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -150) -- Điều chỉnh vị trí
+MainFrame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+MainFrame.BorderSizePixel = 0
+MainFrame.Visible = false
+MainFrame.Draggable = true
+
+-- Tạo nút đóng (TextButton) (giữ nguyên)
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Size = UDim2.new(0.15, 0, 0.08, 0) -- Giảm chiều cao
+CloseButton.Position = UDim2.new(0.85, 0, 0, 0)
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.new(1, 1, 1)
+CloseButton.BackgroundColor3 = Color3.new(0.8, 0.2, 0.2)
+CloseButton.BorderSizePixel = 0
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.TextScaled = true
+CloseButton.Parent = MainFrame
+CloseButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = false
+    OpenButton.Visible = true
+end)
+
+-- Tạo thông tin người làm và phiên bản (TextLabel) (giữ nguyên)
+local InfoLabel = Instance.new("TextLabel")
+InfoLabel.Name = "HubInfoLabel"
+InfoLabel.Size = UDim2.new(1, 0, 0.08, 0) -- Giảm chiều cao
+InfoLabel.Position = UDim2.new(0, 0, 0.92, 0) -- Thay đổi vị trí
+InfoLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+InfoLabel.BackgroundTransparency = 1
+InfoLabel.TextColor3 = Color3.new(1, 1, 1)
+InfoLabel.Text = TenNguoiLam .. " | Ver " .. PhienBan
+InfoLabel.Font = Enum.Font.SourceSans
+InfoLabel.TextScaled = true
+InfoLabel.Parent = MainFrame
+InfoLabel.TextXAlignment = Enum.TextXAlignment.Right
+
+-- Tạo tiêu đề danh mục (TextLabel) (giữ nguyên)
+local CategoryTitle = Instance.new("TextLabel")
+CategoryTitle.Name = "CategoryTitleLabel"
+CategoryTitle.Size = UDim2.new(1, 0, 0.08, 0) -- Giảm chiều cao
+CategoryTitle.BackgroundColor3 = Color3.new(1, 1, 1)
+CategoryTitle.BackgroundTransparency = 1
+CategoryTitle.TextColor3 = Color3.new(1, 1, 1)
+CategoryTitle.Text = TenHub
+CategoryTitle.Font = Enum.Font.SourceSansBold
+CategoryTitle.TextScaled = true
+CategoryTitle.Parent = MainFrame
+CategoryTitle.TextXAlignment = Enum.TextXAlignment.Center
+CategoryTitle.Position = UDim2.new(0, 0, 0.08, 0) -- Đặt vị trí dưới nút đóng
+
+-- Tạo khu vực chứa các nút danh mục (Frame)
+local CategoryButtonsFrame = Instance.new("Frame")
+CategoryButtonsFrame.Name = "CategoryButtonsFrame"
+CategoryButtonsFrame.Size = UDim2.new(0.9, 0, 0.75, 0) -- Tăng kích thước
+CategoryButtonsFrame.Position = UDim2.new(0.05, 0, 0.16, 0) -- Điều chỉnh vị trí
+CategoryButtonsFrame.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
+CategoryButtonsFrame.BorderSizePixel = 0
+CategoryButtonsFrame.LayoutOrder = 1 -- Đảm bảo nằm trên các nội dung danh mục
+CategoryButtonsFrame.Parent = MainFrame
+
+-- Tạo khu vực chứa nội dung các danh mục (Frame)
+local CategoriesContentFrame = Instance.new("Frame")
+CategoriesContentFrame.Name = "CategoriesContentFrame"
+CategoriesContentFrame.Size = UDim2.new(0.9, 0, 0.75, 0) -- Kích thước tương tự nút
+CategoriesContentFrame.Position = UDim2.new(0.05, 0, 0.16, 0) -- Cùng vị trí
+CategoriesContentFrame.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4)
+CategoriesContentFrame.BorderSizePixel = 0
+CategoriesContentFrame.ClipsDescendants = true -- Ẩn nội dung vượt quá khung
+CategoriesContentFrame.LayoutOrder = 2 -- Đảm bảo nằm dưới các nút danh mục
+CategoriesContentFrame.Parent = MainFrame
+
+-- Dữ liệu danh mục (tên và URL script tương ứng)
+local categoriesData = {
+    {Name = "Fix Lag", ScriptURL = "loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fix-lag-all-game-24449"))()"},
+    {Name = "Rejoin", ScriptURL = "loadstring(game:HttpGet("https://raw.githubusercontent.com/lynussxs/Testhub/refs/heads/main/HubTest.lua"))()"},
+    {Name = "Exit", ScriptURL = "loadstring(game:HttpGet("https://raw.githubusercontent.com/oxireun/Roblox/refs/heads/main/Hyundai.lua"))()
+
+"}
+    -- Thêm các danh mục khác tại đây
+}
+
+local categoryFrames = {} -- Bảng để lưu trữ các khung nội dung danh mục
+
+-- Hàm tạo nút danh mục
+local function createCategoryButton(categoryInfo, yPosition)
+    local button = Instance.new("TextButton")
+    button.Name = categoryInfo.Name .. "Button"
+    button.Size = UDim2.new(1, 0, 0.15, 0)
+    button.Position = UDim2.new(0, 0, yPosition, 0)
+    button.Text = "^ " .. categoryInfo.Name -- Icon ban đầu là đóng
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4)
+    button.BorderSizePixel = 0
+    button.Font = Enum.Font.SourceSansBold
+    button.TextScaled = true
+    button.Parent = CategoryButtonsFrame
+
+    -- Tạo khung nội dung cho danh mục
+    local contentFrame = Instance.new("Frame")
+    contentFrame.Name = categoryInfo.Name .. "Content"
+    contentFrame.Size = UDim2.new(1, 0, 0, 0) -- Ban đầu chiều cao là 0
+    contentFrame.Position = UDim2
+Frame.Position = UDim2
