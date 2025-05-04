@@ -42,7 +42,7 @@ local title = Instance.new("TextLabel", frame)
 title.Size = UDim2.new(1, 0, 0, 30)
 title.Position = UDim2.new(0, 0, 0, 0)
 title.BackgroundTransparency = 1
-title.Text = "Neuron X Bloxfruit [ Intelligence Project ]"
+title.Text = "LongMa X Bloxfruit [ Intelligence Project ]"
 title.TextColor3 = Color3.fromRGB(255, 85, 85)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 16
@@ -100,4 +100,4 @@ closeTween.Completed:Wait()
 screenGui:Destroy()
 
 -- CHÈN CODE UI CHÍNH TẠI ĐÂY:
-loadstring(game:HttpGet("https://raw.githubusercontent.com/lynussxs/Testhub/refs/heads/main/SigmaHub"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/lynussxs/Testhub/refs/heads/main/mainhubsigma"))()
