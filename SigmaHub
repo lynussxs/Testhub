@@ -1,83 +1,103 @@
-
---// SERVICES
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
---// UI SETUP
+-- Tạo GUI
 local screenGui = Instance.new("ScreenGui", playerGui)
-screenGui.Name = "MyAwesomeHub"
+screenGui.Name = "LoadingScreen"
 screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
 
---// UI ICON (Hiện ra đầu tiên - Có thể di chuyển)
-local iconHolder = Instance.new("Frame", screenGui)
-iconHolder.Size = UDim2.new(0, 55, 0, 55)
-iconHolder.Position = UDim2.new(0, 10, 0, 10)
-iconHolder.BackgroundTransparency = 1
-iconHolder.Active = true
-iconHolder.Draggable = true
+-- Frame chính
+local frame = Instance.new("Frame", screenGui)
+frame.Size = UDim2.new(0, 400, 0, 200)
+frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.ClipsDescendants = true
 
-local iconButton = Instance.new("ImageButton", iconHolder)
-iconButton.Name = "UIIcon"
-iconButton.Size = UDim2.new(1, 0, 1, 0)
-iconButton.Position = UDim2.new(0, 0, 0, 0)
-iconButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-iconButton.Image = "rbxassetid://104623858135270"
-iconButton.BorderSizePixel = 0
-Instance.new("UICorner", iconButton).CornerRadius = UDim.new(0, 8)
+-- Bo góc khung
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0, 20)
 
---// MAIN UI
-local mainFrame = Instance.new("Frame", screenGui)
-mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.new(0, 500, 0, 300)
-mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-mainFrame.Visible = false
-mainFrame.BorderSizePixel = 0
-mainFrame.ClipsDescendants = true
-mainFrame.Active = true
-mainFrame.Draggable = true
+-- Viền rainbow
+local outline = Instance.new("UIStroke", frame)
+outline.Thickness = 3
+outline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
-Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 15)
-local stroke = Instance.new("UIStroke", mainFrame)
-stroke.Thickness = 3
-
+-- Hiệu ứng viền rainbow
 task.spawn(function()
 	while screenGui and screenGui.Parent do
 		for h = 0, 1, 0.01 do
-			stroke.Color = Color3.fromHSV(h, 1, 1)
+			outline.Color = Color3.fromHSV(h, 1, 1)
 			task.wait(0.02)
 		end
 	end
 end)
 
-local hubName = Instance.new("TextLabel", mainFrame)
-hubName.Size = UDim2.new(1, -20, 0, 30)
-hubName.Position = UDim2.new(0, 10, 0, 5)
-hubName.BackgroundTransparency = 1
-hubName.Text = "Sigma Hub | By LongMa Script"
-hubName.TextColor3 = Color3.fromRGB(255, 85, 255)
-hubName.Font = Enum.Font.GothamBold
-hubName.TextSize = 18
-hubName.TextXAlignment = Enum.TextXAlignment.Left
+-- Tiêu đề Hub
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "Neuron X Bloxfruit [ Intelligence Project ]"
+title.TextColor3 = Color3.fromRGB(255, 85, 85)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 16
 
---// TOGGLE MAIN UI
-iconButton.MouseButton1Click:Connect(function()
-	if not mainFrame.Visible then
-		mainFrame.Size = UDim2.new(0, 0, 0, 0)
-		mainFrame.Visible = true
-		TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back), {
-			Size = UDim2.new(0, 500, 0, 300)
-		}):Play()
-	else
-		local closeTween = TweenService:Create(mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
-			Size = UDim2.new(0, 0, 0, 0)
-		})
-		closeTween:Play()
-		closeTween.Completed:Wait()
-		mainFrame.Visible = false
-	end
-end)
+-- Thông báo đang loading
+local loadingLabel = Instance.new("TextLabel", frame)
+loadingLabel.Size = UDim2.new(1, 0, 0, 30)
+loadingLabel.Position = UDim2.new(0, 0, 0.5, -30)
+loadingLabel.BackgroundTransparency = 1
+loadingLabel.Text = "Loading Asset, please wait..."
+loadingLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+loadingLabel.Font = Enum.Font.Gotham
+loadingLabel.TextSize = 14
+
+-- Thanh nền của loading bar
+local barBackground = Instance.new("Frame", frame)
+barBackground.Size = UDim2.new(0.8, 0, 0, 12)
+barBackground.Position = UDim2.new(0.1, 0, 0.7, 0)
+barBackground.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+barBackground.BorderSizePixel = 0
+
+local barCorner = Instance.new("UICorner", barBackground)
+barCorner.CornerRadius = UDim.new(0, 8)
+
+-- Thanh tiến trình
+local bar = Instance.new("Frame", barBackground)
+bar.Size = UDim2.new(0, 0, 1, 0)
+bar.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+bar.BorderSizePixel = 0
+
+local barCorner2 = Instance.new("UICorner", bar)
+barCorner2.CornerRadius = UDim.new(0, 8)
+
+-- Hiệu ứng xuất hiện
+frame.Size = UDim2.new(0, 0, 0, 0)
+TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+	Size = UDim2.new(0, 400, 0, 200)
+}):Play()
+
+-- Tăng thanh loading
+task.wait(0.6)
+local tween = TweenService:Create(bar, TweenInfo.new(5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+	Size = UDim2.new(1, 0, 1, 0)
+})
+tween:Play()
+tween.Completed:Wait()
+
+-- Hiệu ứng thu nhỏ rồi ẩn
+local closeTween = TweenService:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+	Size = UDim2.new(0, 0, 0, 0)
+})
+closeTween:Play()
+closeTween.Completed:Wait()
+
+screenGui:Destroy()
+
+-- CHÈN CODE UI CHÍNH TẠI ĐÂY:
+loadstring(game:HttpGet("https://raw.githubusercontent.com/lynussxs/Testhub/refs/heads/main/SigmaHub"))()
